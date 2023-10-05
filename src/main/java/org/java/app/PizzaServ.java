@@ -23,4 +23,8 @@ public class PizzaServ {
 		
 		return pizzaRepo.findById(id).get();
 	}
+	public Pizza findByTitleIgnoreCase(String title) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

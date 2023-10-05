@@ -14,12 +14,49 @@
 	<h1 th:if="${pizze.size() < 1}">Pizze in manutenzione, riprova più tardi :(</h1>
 	<ul class="list-unstyled" th:if="${pizze.size() > 0}">
 		<li
-			th:each="pizza : ${pizze}"
-			th:object="${pizza}"
-		>
-			[[*{name}]]
-		</li>
+	th:each="pizza : ${pizze}"
+	th:object="${pizza}"
+>
+	<a th:href="@{/{id}(id=*{id})}">
+		[[*{name}]]
+	</a>
+</li>
 	</ul>
+	
+	<form action="/pizzas/{title}" method="GET">
+  		<input type="text" name="title" placeholder="Filtra per titolo">
+	</form>
+	
+	<script>
+		function filterPizzas(word) {
+		  // Ottiene le pizze dalla pagina
+		  var pizzas = document.querySelectorAll(".list-unstyled > li");
+		  // Per ogni pizza
+		  for (var i = 0; i < pizzas.length; i++) {
+		    // Se la parola è vuota, mostra tutte le pizze
+		    if (word === "") {
+		      pizzas[i].style.display = "block";
+		    } else {
+		      // Controlla se la pizza contiene la parola scritta
+		      var pizzaName = pizzas[i].textContent;
+		      if (pizzaName.toLowerCase().indexOf(word.toLowerCase()) === -1) {
+		        // Se non la contiene, la nasconde
+		        pizzas[i].style.display = "none";
+		      } else {
+		        // Se la contiene, la mostra
+		        pizzas[i].style.display = "block";
+		      }
+		    }
+		  }
+		}
+		
+		// Avvia la funzione quando l'utente cambia la parola scritta nel form
+		document.querySelector("input[name='title']").addEventListener("keyup", function() {
+			var word = this.value;
+			filterPizzas(word);
+		});
+	</script>
+	
 	</div>
 
 <script th:src="@{/webjars/bootstrap/5.3.2/js/bootstrap.bundle.min.js}"></script>
