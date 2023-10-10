@@ -8,15 +8,17 @@
 </head>
 <body>
 	
-	<th:block th:replace="nav"/>
+	<th:block th:replace="~{nav}"/>
 	<div class="d-flex justify-content-center my-4">
 
   <body th:object="${pizza}">
   		<div class="card col-6">
-   			 <img src="[[*{photo}]]" class="card-img-top img-fluid" alt="img" width="100%" height="300px" border="1px solid black">
+   			 <img th:src="*{photo}" class="card-img-top img-fluid" alt="img" width="100%" height="300px" border="1px solid black">
     		 <div class="card-body">
      			  <h5 class="card-title">[[*{name}]]</h5>
      			  <p class="card-text">[[*{description}]]</p>
+     			  <hr>
+     			  <p class="mb-0 text-end">[[*{price}]] €</p>
     		 </div>
  		 </div>
   </body>

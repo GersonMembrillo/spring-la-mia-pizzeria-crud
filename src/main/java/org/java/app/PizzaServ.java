@@ -19,12 +19,16 @@ public class PizzaServ {
 		
 		return pizzaRepo.findAll();
 	}
+	
+	public List<Pizza> findByName(String name) {
+
+		return pizzaRepo.findByNameContaining(name);
+	}
+	
 	public Pizza findById(int id) {
 		
 		return pizzaRepo.findById(id).get();
 	}
-	public Pizza findByTitleIgnoreCase(String title) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+
+	
 }
