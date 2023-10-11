@@ -46,7 +46,7 @@ public class PizzaController {
 		return "pizza-show";
 	}
 	@GetMapping("/create")
-	public String getCreateFormt(Model model) {
+	public String getCreateForm(Model model) {
 		
 		model.addAttribute("pizza", new Pizza());
 		
@@ -59,20 +59,56 @@ public class PizzaController {
 			Model model
 		) {
 		
-		System.out.println("pizza:\n" + pizza);
+		return storePizza(pizza, bindingResult);
+	}
+	
+	@GetMapping("/edit/{id}")
+	public String getEditForm(
+			@PathVariable int id,
+			Model model
+		) {
 		
-		if (bindingResult.hasErrors()) {
-			
-			System.out.println("Errors");
-			bindingResult.getAllErrors().stream()
-			.map(e -> e.getDefaultMessage())
-			.forEach(System.out::println);
-			return "pizza-create";
-		}
+		Pizza pizza = pizzaServ.findById(id);
+		model.addAttribute("pizza", pizza);
 		
-		pizzaServ.save(pizza);
+		return "pizza-create";
+	}
+	@PostMapping("/edit/{id}")
+	public String updatePizza(
+			@Valid @ModelAttribute Pizza pizza,
+			BindingResult bindingResult
+		) {
+		
+		return storePizza(pizza, bindingResult);
+	}
+	
+	@PostMapping("/delete/{id}")
+	public String deletePizza(
+			@PathVariable int id
+		) {
+		
+		Pizza pizza = pizzaServ.findById(id);
+		pizzaServ.deletePizza(pizza);
 		
 		return "redirect:/";
 	}
 	
+	private String storePizza(Pizza pizza, BindingResult bindingResult) {
+		
+		System.out.println("pizza:\n" + pizza);
+
+		if (bindingResult.hasErrors()) {
+
+			System.out.println("Errors");
+			bindingResult.getAllErrors().stream()
+					.map(e -> e.getDefaultMessage())
+				.forEach(System.out::println);
+
+			return "pizza-form";
+		}
+
+		pizzaServ.save(pizza);
+
+		return "redirect:/";
+	}
 }
